@@ -12,7 +12,8 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        //
+        $allKategori = Kategori::all();
+        return view('kategori.index', compact('allKategori'));
     }
 
     /**
@@ -20,7 +21,7 @@ class KategoriController extends Controller
      */
     public function create()
     {
-        //
+        return view('kategori.create');
     }
 
     /**
@@ -28,7 +29,16 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // buat validasi data
+        $validatedData = $request->validate([
+            'nama_kategori' => 'required|string|max:255',
+        ]);
+
+        // simpan data
+        Kategori::create($validatedData);
+
+        // redirect ke index kategori
+        return redirect()->route('kategori.index');
     }
 
     /**
@@ -36,7 +46,7 @@ class KategoriController extends Controller
      */
     public function show(Kategori $kategori)
     {
-        //
+        return view('kategori.show', compact('kategori'));
     }
 
     /**
@@ -44,7 +54,7 @@ class KategoriController extends Controller
      */
     public function edit(Kategori $kategori)
     {
-        //
+       return view('kategori.edit', compact('kategori'));
     }
 
     /**
@@ -52,7 +62,16 @@ class KategoriController extends Controller
      */
     public function update(Request $request, Kategori $kategori)
     {
-        //
+          // buat validasi data
+        $validatedData = $request->validate([
+            'nama_kategori' => 'required|string|max:255',
+        ]);
+
+        // update data
+       $kategori->update($validatedData);
+
+        // redirect ke index kategori
+        return redirect()->route('kategori.index');
     }
 
     /**
@@ -60,6 +79,8 @@ class KategoriController extends Controller
      */
     public function destroy(Kategori $kategori)
     {
-        //
+        $kategori->delete();
+         // redirect ke index kategori
+        return redirect()->route('kategori.index');
     }
 }
